@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloud Cost Estimator</title>
+  <meta name="description" content="Estimate your monthly AWS bill for a simple web application.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top">Cloud Cost Estimator</a>
+    <nav>
+      <a href="#estimator">Estimator</a>
+      <a href="#notes">Notes</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <h1>What will your cloud setup cost?</h1>
+      <p class="lead">Choose your services, set how much you use them, and see a rough monthly bill. Everything runs in your browser.</p>
+      <div class="presets" role="group" aria-label="Quick start examples">
+        <span>Start with an example:</span>
+        <button type="button" class="chip" data-preset="static">Static website</button>
+        <button type="button" class="chip" data-preset="webapp">Web app with database</button>
+        <button type="button" class="chip" data-preset="busy">Busy app</button>
+      </div>
+    </section>
+
+    <div class="layout" id="estimator">
+      <form class="inputs" id="estimatorForm" novalidate>
+
+        <fieldset class="panel">
+          <legend>Servers (EC2)</legend>
+          <label for="ec2Type">Instance size</label>
+          <select id="ec2Type"></select>
+          <label for="ec2Count">Number of servers</label>
+          <input id="ec2Count" type="number" min="0" max="100" value="0">
+          <label for="ec2Hours">Hours running per month <small>(730 = always on)</small></label>
+          <input id="ec2Hours" type="number" min="0" max="730" value="730">
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend>Disk storage (EBS)</legend>
+          <label for="ebsGb">Total disk size in GB</label>
+          <input id="ebsGb" type="number" min="0" max="100000" value="0">
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend>File storage (S3)</legend>
+          <label for="s3Gb">Data stored in GB</label>
+          <input id="s3Gb" type="number" min="0" max="1000000" value="0">
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend>Database (RDS MySQL)</legend>
+          <label for="rdsType">Database size</label>
+          <select id="rdsType"></select>
+          <label for="rdsGb">Database storage in GB</label>
+          <input id="rdsGb" type="number" min="0" max="100000" value="20">
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend>Traffic and delivery</legend>
+          <label class="check"><input id="albOn" type="checkbox"> <span>Load balancer (ALB)</span></label>
+          <label for="cfGb">CloudFront data delivered in GB</label>
+          <input id="cfGb" type="number" min="0" max="1000000" value="0">
+          <label for="transferGb">Data sent out directly from AWS in GB</label>
+          <input id="transferGb" type="number" min="0" max="1000000" value="0">
+        </fieldset>
+
+        <button type="button" class="btn btn-ghost" id="resetBtn">Reset everything</button>
+      </form>
+
+      <aside class="result" aria-live="polite">
+        <div class="total-card">
+          <p class="total-label">Estimated monthly cost</p>
+          <p class="total" id="total">$0.00</p>
+          <p class="yearly" id="yearly">About $0.00 per year</p>
+        </div>
+
+        <div class="panel">
+          <h2>Where the money goes</h2>
+          <ul class="breakdown" id="breakdown"></ul>
+          <p class="empty" id="emptyMsg">Add some servers or storage and your costs will appear here.</p>
+        </div>
+
+        <button type="button" class="btn" id="copyBtn">Copy summary</button>
+        <p class="form-status" id="copyStatus" role="status"></p>
+      </aside>
+    </div>
+
+    <section id="notes" class="panel notes">
+      <h2>Good to know</h2>
+      <ul>
+        <li>Prices are approximate on-demand rates for US East (N. Virginia) and use 730 hours per month.</li>
+        <li>Real bills also include taxes, requests, backups and other small items.</li>
+        <li>Prices change. Always confirm with the official AWS Pricing Calculator before you plan a budget.</li>
+        <li>To update a price, edit the <code>PRICES</code> section at the top of <code>js/script.js</code>.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Cloud Cost Estimator <span id="year"></span>. For learning and rough planning only.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
